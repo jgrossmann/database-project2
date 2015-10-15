@@ -16,5 +16,11 @@ public class Category {
         specificity = 0.0;
     }
     
-    
+    public Category getSubCategory(String name) {
+        for(Category c : subCategories) {
+            if(c.name.equalsIgnoreCase(name)) {
+                return c;
+            }
+        }
+    }
 }
