@@ -7,9 +7,12 @@ public class App {
             return;
         }
         
+        double sThresh = 0.0;
+        int cThresh = 0;
+        
         try {
-            double sThresh = Double.parseDouble(args[0]);
-            int cThresh = Integer.parseInt(args[1]);
+            sThresh = Double.parseDouble(args[0]);
+            cThresh = Integer.parseInt(args[1]);
         } catch(NumberFormatException e) {
             e.printStackTrace();
             return;

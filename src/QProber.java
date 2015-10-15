@@ -1,3 +1,10 @@
+import java.util.*;
+import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.net.URLConnection;
+import org.apache.commons.codec.binary.Base64;
 
 public class QProber {
     int cThresh;
@@ -60,7 +67,7 @@ public class QProber {
 		return content;
 	}
     
-    public void getQueryResults(Category root, String path) {
+    public void getQueryResults(Category root, String path) throws FileNotFoundException {
         File file = new File(path);
         BufferedReader in = new BufferedReader(new FileReader(file));
         String line;
@@ -70,11 +77,11 @@ public class QProber {
             Category subCategory = root.getSubCategory(args[0]);
             String[] queryWords = Arrays.copyOfRange(args, 1, args.length);
             String url = createUrl(queryWords);
-            String getBingResults(url);
+            String results = getBingResults(url);
             //parse string results to get number of results
-            int numResults = //
-            subCategory.numMatches += numResults;
-            root.numMatches += numResults;
+            //int numResults
+            //subCategory.numMatches += numResults;
+            //root.numMatches += numResults;
         }
         
     }
