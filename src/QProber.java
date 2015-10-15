@@ -5,6 +5,13 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import org.apache.commons.codec.binary.Base64;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class QProber {
     int cThresh;
@@ -39,17 +46,8 @@ public class QProber {
         sports.subCategories.add(new Category("Basketball", sports));
         return root;
     }
-    
-    public static String createUrl(String[] queryWords) {
-		String bingUrl = "https://api.datamarket.azure.com/Bing/Search/Web?Query=%27"; 
-        int i = 0;
-        for(; i < queryWords.length-1; i++) {
-          bingUrl += queryWords[i] + "%20";
-        }
-        bingUrl += queryWords[i] + "%27&$top=10&$format=Atom";
 
-		return bingUrl;
-	}
+
 	
 	//takes a bingUrl as input and returns the results as a string from bing.
 	public static String getBingResults(String bingUrl) throws IOException {
@@ -71,19 +69,63 @@ public class QProber {
         File file = new File(path);
         BufferedReader in = new BufferedReader(new FileReader(file));
         String line;
-        
-        while((line = in.readLine()) != null) {
+       
+	try{ 
+       	while((line = in.readLine()) != null) {
             String[] args = line.split("\\s+");
             Category subCategory = root.getSubCategory(args[0]);
             String[] queryWords = Arrays.copyOfRange(args, 1, args.length);
             String url = createUrl(queryWords);
             String results = getBingResults(url);
             //parse string results to get number of results
-            //int numResults
-            //subCategory.numMatches += numResults;
-            //root.numMatches += numResults;
+            int numResults = getResultCount(results);
+            subCategory.numMatches += numResults;
+            root.numMatches += numResults;
         }
+	}
+	catch(IOException io){
+		io.printStackTrace();
+	}
         
     }
+
+    public int getResultCount(String s){
+		
+		int count = 0;
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		
+		try{
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			Document dom = db.parse(new InputSource(new ByteArrayInputStream(s.getBytes("utf-8"))));
+
+			Element docEle = dom.getDocumentElement();
+			
+			String num = docEle.getElementsByTagName("d:WebTotal").item(0).getTextContent();
+			//System.out.println("number is " + num);
+			count = Integer.parseInt(num);
+			
+		}catch(ParserConfigurationException x){
+			System.out.print("Parse error");
+			x.printStackTrace();
+		}catch(SAXException se){
+			se.printStackTrace();
+		}catch(IOException io){
+			io.printStackTrace();
+		}
+		return count;
+	}
+	
+	public String createUrl(String[] queryWords) {
+
+        String bingUrl = "https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%27";
+        bingUrl += "site%3a" + site + "%20"; 
+        int i = 0;
+        for(; i < queryWords.length-1; i++) {
+        	bingUrl += queryWords[i] + "%20";
+        }
+        bingUrl += queryWords[i] + "%27&$top=10&$format=Atom";
+
+        return bingUrl;
+	}
     
 }
