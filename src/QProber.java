@@ -30,6 +30,7 @@ public class QProber {
     
     public Category createCategoryTree() {
         Category root = new Category("Root", null);
+        root.specificity = 1.0;
         Category computers = new Category("Computers", root);
         Category health = new Category("Health", root);
         Category sports = new Category("Sports", root);
@@ -64,6 +65,26 @@ public class QProber {
 		String content = new String(contentRaw);
 		return content;
 	}
+	
+	public void qProberAlgorithm() {
+	    getQueryResults(root, "categories/root.txt");
+	    for(Category c : root.subCategories) {
+	        if(c.name.equalsIgnoreCase("Computer") {
+	            getQueryResults(c, "categories/computer.txt"));
+	            
+	        }else if(c.name.equalsIgnoreCase("Health")) {
+	            getQueryResults(c, "categories/health.txt");
+	        }if(c.name.equalsIgnoreCase("Sports")) {
+	            getQueryResults(c, "categories/sports.txt");
+	        }
+	    }
+	    
+	    root.calculateSpecificity();
+	    for(Category c : root.subCategories) {
+	        c.calculateSpecificity();
+	    }
+	    
+	}
     
     public void getQueryResults(Category root, String path) throws FileNotFoundException {
         File file = new File(path);
@@ -77,16 +98,21 @@ public class QProber {
             String[] queryWords = Arrays.copyOfRange(args, 1, args.length);
             String url = createUrl(queryWords);
             String results = getBingResults(url);
-            //parse string results to get number of results
             int numResults = getResultCount(results);
-            subCategory.numMatches += numResults;
-            root.numMatches += numResults;
+            subCategory.coverage += numResults;
         }
 	}
 	catch(IOException io){
 		io.printStackTrace();
 	}
         
+    }
+    
+    public void calculateSpecificity() {
+        root.calculateSpecificity();
+        for(Category c : root.subCategories) {
+            c.calculateSpecificity();
+        }
     }
 
     public int getResultCount(String s){
