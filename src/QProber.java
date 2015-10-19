@@ -69,8 +69,8 @@ public class QProber {
 	public void qProberAlgorithm() {
 	    getQueryResults(root, "categories/root.txt");
 	    for(Category c : root.subCategories) {
-	        if(c.name.equalsIgnoreCase("Computer") {
-	            getQueryResults(c, "categories/computer.txt"));
+	        if(c.name.equalsIgnoreCase("Computer")) {
+	            getQueryResults(c, "categories/computer.txt");
 	            
 	        }else if(c.name.equalsIgnoreCase("Health")) {
 	            getQueryResults(c, "categories/health.txt");
@@ -85,13 +85,35 @@ public class QProber {
 	    }
 	    
 	}
+	
+	public List<String> categorizeDatabase() {
+	    List<String> categories = new ArrayList<String>();
+	    categories.add("Root");
+	    for(Category c : root.subCategories) {
+	    
+	        if(c.coverage >= cThresh) {
+	            if(c.specificity >= sThresh) {
+	                categories.add(c.name);
+	                
+	                for(Category subCategory : c.subCategories) {
+	                    if(subCategory.coverage >= cThresh && subCategory.specificity >= sThresh) {
+	                        categories.add(subCategory.name);
+	                    }
+	                }
+	            }
+	            
+	        }
+	    }
+	    return categories;
+	}
     
-    public void getQueryResults(Category root, String path) throws FileNotFoundException {
+    public void getQueryResults(Category root, String path){
+        try{
         File file = new File(path);
         BufferedReader in = new BufferedReader(new FileReader(file));
         String line;
        
-	try{ 
+	
        	while((line = in.readLine()) != null) {
             String[] args = line.split("\\s+");
             Category subCategory = root.getSubCategory(args[0]);

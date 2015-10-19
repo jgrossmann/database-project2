@@ -1,4 +1,4 @@
-
+import java.util.*;
 public class App {
 
     public static void main(String[] args) {
@@ -20,5 +20,10 @@ public class App {
         String site = args[2];
         
         QProber prober = new QProber(cThresh, sThresh, site);
+        prober.qProberAlgorithm();
+        List<String> category = prober.categorizeDatabase();
+        for(String str : category) {
+            System.out.println(str);
+        }
     }
 }
