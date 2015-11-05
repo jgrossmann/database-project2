@@ -15,11 +15,12 @@ public class ContentSummary {
 	    writeToFile(ds.category.name+"-"+site+".txt");
 	}
 	
-	
+	//combine all the words in sampleWords and get their document frequency
 	public void populateContentSummary(){
 	    
 		for(Set<String> s : ds.sampleWords){
 		    for(String str : s) {
+			//update document frequency for each word
 		        Integer freq = summary.get(str);
 		        if(freq == null) {
 		            freq = 0;
