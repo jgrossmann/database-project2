@@ -1,6 +1,28 @@
 import java.util.*;
 public class App {
 
+    public static String[] combineUrlMaps(List<Category> categories) {
+        HashMap<String, Integer> urlMap = new HashMap<String, Integer>();
+        for(Category c : categories) {
+            urlMap.putAll(c.urls);
+        }
+        return urlMap.keySet().toArray(new String[urlMap.size()]);
+    }
+    
+    public static void createContentSummary(Category root, String site) {
+        List<Category> list = new ArrayList<Category>();
+        list.add(root);
+        for(Category c : root.subCategories) {
+            if(c.aboveThresh) list.add(c);
+        }
+        String[] urls = combineUrlMaps(list);
+        System.out.println(urls.length);
+        
+        DocumentSample rootDs = new DocumentSample(root, urls);
+        System.out.println(rootDs.sampleWords.length);
+        new ContentSummary(rootDs, site);
+    }
+
     public static void main(String[] args) {
         if(args.length != 3) {
             System.out.println("Usage: please run ./run.sh UPDATE USAGE");
@@ -21,9 +43,16 @@ public class App {
         
         QProber prober = new QProber(cThresh, sThresh, site);
         prober.qProberAlgorithm();
-        List<String> category = prober.categorizeDatabase();
-        for(String str : category) {
-            System.out.println(str);
+        Category root = prober.categorizeDatabase();
+        System.out.println("Root");
+        createContentSummary(root, site);
+        
+        for(Category c : root.subCategories) {
+            if(c.aboveThresh) {
+                System.out.println(c.name);
+                createContentSummary(root, site);
+            }
         }
+        
     }
 }

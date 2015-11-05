@@ -1,36 +1,54 @@
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.*;
+import java.io.*;
 
 public class ContentSummary {
 	DocumentSample ds;
-	Set<String> allWords = new TreeSet<String>();
-	HashMap<String, Integer> summary;
+	TreeMap<String, Integer> summary;
+	
+	public ContentSummary(DocumentSample ds, String site) {
+	    this.ds = ds;
+	    summary = new TreeMap<String, Integer>();
+	    populateContentSummary();
+	    writeToFile(ds.category.name+"-"+site+".txt");
+	}
 	
 	
 	public void populateContentSummary(){
+	    
 		for(Set<String> s : ds.sampleWords){
-			allWords.addAll(s);
+		    System.out.println("size: "+s.size());
+		    for(String str : s.toArray(new String[s.size()])) {
+		        System.out.println(str);
+		        Integer freq = summary.get(str);
+		        if(freq == null) {
+		            freq = 0;
+		        }
+		        summary.put(str, ++freq);
+		    }
 		}
 		
-		//loop through all words
-		for(String s : allWords){
-			//get document frequency
-			for(Set<String> sample : ds.sampleWords){
-				if(sample.contains(s)){
-					if(summary.containsKey(s)){
-						int docFreq = summary.get(s);
-						summary.put(s, docFreq+1);
-					}
-					else{
-						summary.put(s, 1);
-					}
-				}
-				//no need else
-				//one of the sample has to contain s
-			}
-		}
-		
+	}
+	
+	public void writeToFile(String path) {
+	    File file = new File(path);
+	    if(file == null) {
+	        System.out.println("Can't create file at path: "+path);
+	        return;
+	    }
+	    
+	    try {
+	        PrintWriter out = new PrintWriter(file);
+	        for(Map.Entry<String, Integer> entry : summary.entrySet()) {
+	            out.println(entry.getKey()+" "+entry.getValue());
+	        }
+	        out.flush();
+	        out.close();
+	    }catch(IOException e) {
+	        e.printStackTrace();
+	    }
 	}
 	
 }

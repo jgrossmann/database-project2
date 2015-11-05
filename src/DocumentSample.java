@@ -6,8 +6,14 @@ import java.util.TreeSet;
 
 public class DocumentSample {
 	String[] urls;
-	String CategoryName;
+	Category category;
 	Set<String>[] sampleWords;
+	
+	public DocumentSample(Category c, String[] urls) {
+	    category = c;
+	    this.urls = urls;
+	    sampleWords = new Set[urls.length];
+	}
 	
 	
 	public void populateSet(){

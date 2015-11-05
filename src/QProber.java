@@ -18,6 +18,7 @@ public class QProber {
     double sThresh;
     Category root;
     String site;
+    HashMap<String, Integer> urls;
     
     private static final String account_key = "BU3X9a6Qbmi7UwCgwo3iuHTfOqbU5PWVjuEul/WzOLk";
     
@@ -26,6 +27,7 @@ public class QProber {
         this.sThresh = sThresh;
         root = createCategoryTree();
         this.site = site;
+        urls = new HashMap<String, Integer>();
     }
     
     public Category createCategoryTree() {
@@ -86,25 +88,24 @@ public class QProber {
 	    
 	}
 	
-	public List<String> categorizeDatabase() {
-	    List<String> categories = new ArrayList<String>();
-	    categories.add("Root");
+	public Category categorizeDatabase() {
+	    root.aboveThresh = true;
 	    for(Category c : root.subCategories) {
 	    
 	        if(c.coverage >= cThresh) {
 	            if(c.specificity >= sThresh) {
-	                categories.add(c.name);
+	                c.aboveThresh = true;
 	                
 	                for(Category subCategory : c.subCategories) {
 	                    if(subCategory.coverage >= cThresh && subCategory.specificity >= sThresh) {
-	                        categories.add(subCategory.name);
+	                        subCategory.aboveThresh = true;
 	                    }
 	                }
 	            }
 	            
 	        }
 	    }
-	    return categories;
+	    return root;
 	}
     
     public void getQueryResults(Category root, String path){
@@ -119,8 +120,15 @@ public class QProber {
             Category subCategory = root.getSubCategory(args[0]);
             String[] queryWords = Arrays.copyOfRange(args, 1, args.length);
             String url = createUrl(queryWords);
-            String results = getBingResults(url);
-            int numResults = getResultCount(results);
+            int numResults = 0;
+            if(urls.containsKey(url)) {
+                numResults = urls.get(url);
+            }else {
+                String results = getBingResults(url);
+                numResults = getResultCount(results);
+                urls.put(url, numResults);
+            }
+            root.urls.put(url, numResults);
             subCategory.coverage += numResults;
         }
 	}
