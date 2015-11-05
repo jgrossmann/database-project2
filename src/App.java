@@ -16,10 +16,8 @@ public class App {
             if(c.aboveThresh) list.add(c);
         }
         String[] urls = combineUrlMaps(list);
-        System.out.println(urls.length);
         
         DocumentSample rootDs = new DocumentSample(root, urls);
-        System.out.println(rootDs.sampleWords.length);
         new ContentSummary(rootDs, site);
     }
 

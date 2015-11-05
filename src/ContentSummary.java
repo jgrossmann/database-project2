@@ -19,9 +19,7 @@ public class ContentSummary {
 	public void populateContentSummary(){
 	    
 		for(Set<String> s : ds.sampleWords){
-		    System.out.println("size: "+s.size());
-		    for(String str : s.toArray(new String[s.size()])) {
-		        System.out.println(str);
+		    for(String str : s) {
 		        Integer freq = summary.get(str);
 		        if(freq == null) {
 		            freq = 0;
