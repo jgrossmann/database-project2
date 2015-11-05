@@ -2,11 +2,13 @@ import java.util.*;
 public class App {
 
     public static String[] combineUrlMaps(List<Category> categories) {
-        HashMap<String, Integer> urlMap = new HashMap<String, Integer>();
+        List<String> list = new LinkedList<String>();
         for(Category c : categories) {
-            urlMap.putAll(c.urls);
+            for(List<String> topUrls : c.urls.values()) {
+                list.addAll(topUrls);
+            }
         }
-        return urlMap.keySet().toArray(new String[urlMap.size()]);
+        return list.toArray(new String[list.size()]);
     }
     
     public static void createContentSummary(Category root, String site) {

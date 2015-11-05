@@ -6,7 +6,7 @@ public class Category {
     int coverage;
     double specificity;
     Category parent;
-    HashMap<String, Integer> urls;
+    HashMap<String, List<String>> urls;
     boolean aboveThresh;
     
     public Category(String name, Category parent) {
@@ -14,7 +14,7 @@ public class Category {
         subCategories = new ArrayList<Category>();
         coverage = 0;
         specificity = 0.0;
-        urls = new HashMap<String, Integer>();
+        urls = new HashMap<String, List<String>>();
         aboveThresh = false;
     }
     

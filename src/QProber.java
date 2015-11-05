@@ -120,15 +120,10 @@ public class QProber {
             Category subCategory = root.getSubCategory(args[0]);
             String[] queryWords = Arrays.copyOfRange(args, 1, args.length);
             String url = createUrl(queryWords);
-            int numResults = 0;
-            if(urls.containsKey(url)) {
-                numResults = urls.get(url);
-            }else {
-                String results = getBingResults(url);
-                numResults = getResultCount(results);
-                urls.put(url, numResults);
-            }
-            root.urls.put(url, numResults);
+            String results = getBingResults(url);
+            int numResults = getResultCount(results);
+
+            root.urls.put(url, ResultParser.parseResults(results, numResults));
             subCategory.coverage += numResults;
         }
 	}
