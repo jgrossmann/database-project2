@@ -44,19 +44,14 @@ public class App {
         QProber prober = new QProber(cThresh, sThresh, site);
         prober.qProberAlgorithm();
         Category root = prober.categorizeDatabase();
-        System.out.println("Root");
         createContentSummary(root, site);
         
         for(Category c : root.subCategories) {
-            System.out.println("Specificity for "+c.name+": "+c.specificity);
-            System.out.println("Coverage for "+c.name+": "+c.coverage);
             if(c.aboveThresh) {
                 System.out.println(c.name);
                 createContentSummary(c, site);
                 for(Category sub : c.subCategories) {
-                    System.out.println("Sepcificity for "+sub.name+": "+sub.specificity);
-                    System.out.println("Coverage for "+sub.name+": "+sub.coverage);
-                    if(c.aboveThresh) {
+                    if(sub.aboveThresh) {
                         System.out.println(sub.name);
                     }
                 }

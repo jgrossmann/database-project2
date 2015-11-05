@@ -89,18 +89,28 @@ public class QProber {
 	}
 	
 	public Category categorizeDatabase() {
+	    System.out.println("Classifying...");
+	    String classification = "Root";
 	    root.aboveThresh = true;
 	    for(Category c : root.subCategories) {
-	    
+	        System.out.println("Specificity for category: "+c.name+" is "+c.specificity);
+	        System.out.println("Coverage for category: "+c.name+" is "+c.coverage);
 	        if(c.coverage >= cThresh) {
 	            if(c.specificity >= sThresh) {
 	                c.aboveThresh = true;
-	                
+	                String subClass = classification+"/"+c.name;
+	                boolean printed = false;
 	                for(Category subCategory : c.subCategories) {
+	                    System.out.println("Specificity for category: "+subCategory.name+" is "+subCategory.specificity);
+	                    System.out.println("Coverage for category: "+subCategory.name+" is "+subCategory.coverage);
 	                    if(subCategory.coverage >= cThresh && subCategory.specificity >= sThresh) {
 	                        subCategory.aboveThresh = true;
+	                        printed = true;
+	                        System.out.println(subClass+"/"+subCategory.name);
 	                    }
 	                }
+	                
+	                if(!printed) System.out.println(subClass);
 	            }
 	            
 	        }
