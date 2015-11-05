@@ -38,7 +38,7 @@ public class ContentSummary {
 	    }
 	    
 	    try {
-	        PrintWriter out = new PrintWriter(file);
+	        PrintWriter out = new PrintWriter(new FileOutputStream(file, false));
 	        for(Map.Entry<String, Integer> entry : summary.entrySet()) {
 	            out.println(entry.getKey()+" "+entry.getValue());
 	        }
