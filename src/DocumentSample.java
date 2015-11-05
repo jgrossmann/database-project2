@@ -13,6 +13,7 @@ public class DocumentSample {
 	    category = c;
 	    this.urls = urls;
 	    sampleWords = new Set[urls.length];
+	    populateSet();
 	}
 	
 	
