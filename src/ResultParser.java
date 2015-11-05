@@ -47,6 +47,7 @@ public class ResultParser {
 
 				Element el = (Element)nl.item(i);
                 urls.add(el.getElementsByTagName("d:Url").item(0).getTextContent());
+                //System.out.println(el.getElementsByTagName("d:Url").item(0).getTextContent());
    
 			}
 		}

@@ -50,7 +50,7 @@ public class App {
         for(Category c : root.subCategories) {
             if(c.aboveThresh) {
                 System.out.println(c.name);
-                createContentSummary(root, site);
+                createContentSummary(c, site);
             }
         }
         
