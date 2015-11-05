@@ -20,14 +20,16 @@ public class QProber {
     String site;
     HashMap<String, Integer> urls;
     
-    private static final String account_key = "BU3X9a6Qbmi7UwCgwo3iuHTfOqbU5PWVjuEul/WzOLk";
+    //private static final String account_key = "BU3X9a6Qbmi7UwCgwo3iuHTfOqbU5PWVjuEul/WzOLk";
+    String account_key;
     
-    public QProber(int cThresh, double sThresh, String site) {
+    public QProber(int cThresh, double sThresh, String site, String key) {
         this.cThresh = cThresh;
         this.sThresh = sThresh;
         root = createCategoryTree();
         this.site = site;
         urls = new HashMap<String, Integer>();
+        account_key = key;
     }
     
     public Category createCategoryTree() {
@@ -53,7 +55,7 @@ public class QProber {
 
 	
 	//takes a bingUrl as input and returns the results as a string from bing.
-	public static String getBingResults(String bingUrl) throws IOException {
+	public String getBingResults(String bingUrl) throws IOException {
 		byte[] accountKeyBytes = Base64.encodeBase64((account_key + ":" + account_key).getBytes());
 		String accountKeyEnc = new String(accountKeyBytes);
 

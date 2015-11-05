@@ -25,24 +25,28 @@ public class App {
     }
 
     public static void main(String[] args) {
-        if(args.length != 3) {
-            System.out.println("Usage: please run ./run.sh UPDATE USAGE");
+        if(args.length != 4) {
+            System.out.println("Usage: please run ./run.sh <BING_ACCOUNT_KEY> <t_es> <t_ec> <host>");
+            System.out.println("<BING_ACCOUNT_KEY> is your Bing Search Account Key");
+            System.out.println("<t_es> is the specificity threshold (between 0 and 1)");
+            System.out.println("<t_ec> is the coverage threshold");
+            System.out.println("<host> is the URL of the database to be classified");
             return;
         }
         
         double sThresh = 0.0;
         int cThresh = 0;
-        
+        String key = args[0];
         try {
-            sThresh = Double.parseDouble(args[0]);
-            cThresh = Integer.parseInt(args[1]);
+            sThresh = Double.parseDouble(args[1]);
+            cThresh = Integer.parseInt(args[2]);
         } catch(NumberFormatException e) {
             e.printStackTrace();
             return;
         }
-        String site = args[2];
+        String site = args[3];
         
-        QProber prober = new QProber(cThresh, sThresh, site);
+        QProber prober = new QProber(cThresh, sThresh, site, key);
         prober.qProberAlgorithm();
         Category root = prober.categorizeDatabase();
         createContentSummary(root, site);
