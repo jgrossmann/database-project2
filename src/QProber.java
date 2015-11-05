@@ -92,6 +92,7 @@ public class QProber {
 	    System.out.println("Classifying...");
 	    String classification = "Root";
 	    root.aboveThresh = true;
+	    List<String> printList = new ArrayList<String>();
 	    for(Category c : root.subCategories) {
 	        System.out.println("Specificity for category: "+c.name+" is "+c.specificity);
 	        System.out.println("Coverage for category: "+c.name+" is "+c.coverage);
@@ -106,13 +107,21 @@ public class QProber {
 	                    if(subCategory.coverage >= cThresh && subCategory.specificity >= sThresh) {
 	                        subCategory.aboveThresh = true;
 	                        printed = true;
-	                        System.out.println(subClass+"/"+subCategory.name);
+	                        printList.add(subClass+"/"+subCategory.name);
 	                    }
 	                }
 	                
-	                if(!printed) System.out.println(subClass);
+	                if(!printed) printList.add(subClass);
 	            }
 	            
+	        }
+	    }
+	    
+	    if(printList.size() == 0) {
+	        System.out.println("Root");
+	    }else {
+	        for(String str : printList) {
+	            System.out.println(str);
 	        }
 	    }
 	    return root;
