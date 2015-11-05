@@ -117,6 +117,7 @@ public class QProber {
 	        }
 	    }
 	    
+	    System.out.println("\nClassification:");
 	    if(printList.size() == 0) {
 	        System.out.println("Root");
 	    }else {

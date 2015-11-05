@@ -12,6 +12,7 @@ public class App {
     }
     
     public static void createContentSummary(Category root, String site) {
+        System.out.println("\nCreating Content Summary for: "+root.name);
         List<Category> list = new ArrayList<Category>();
         list.add(root);
         for(Category c : root.subCategories) {
