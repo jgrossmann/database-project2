@@ -51,6 +51,11 @@ public class App {
             if(c.aboveThresh) {
                 System.out.println(c.name);
                 createContentSummary(c, site);
+                for(Category sub : c.subCategories) {
+                    if(c.aboveThresh) {
+                        System.out.println(sub.name);
+                    }
+                }
             }
         }
         
