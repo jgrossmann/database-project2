@@ -40,6 +40,9 @@ public class Category {
         }
         
         for(Category subCategory : subCategories) {
+	    //ESpecificity(D, Parent(Ci)) *  ECoverage(D, Ci)
+	    //--------------------------------------------------------
+	    //Sum of ECoverage(D, Cj) where Cj is a child of Parent(Ci)
             subCategory.specificity = (specificity * subCategory.coverage) / sumChildCoverage; 
         }
     }

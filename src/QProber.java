@@ -159,9 +159,12 @@ public class QProber {
             String[] queryWords = Arrays.copyOfRange(args, 1, args.length);
             String url = createUrl(queryWords);
             String results = getBingResults(url);
+	    //get count from Bing result
             int numResults = getResultCount(results);
 
+	    //get top4 urls associated with each url
             root.urls.put(url, ResultParser.parseResults(results, numResults));
+	    //coverage is the sum of result count from all queries
             subCategory.coverage += numResults;
         }
 	}
@@ -184,7 +187,7 @@ public class QProber {
 		
 		int count = 0;
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-		
+		//parse Bing result xml
 		try{
 			DocumentBuilder db = dbf.newDocumentBuilder();
 			Document dom = db.parse(new InputSource(new ByteArrayInputStream(s.getBytes("utf-8"))));

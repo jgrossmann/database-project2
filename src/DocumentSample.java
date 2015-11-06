@@ -12,7 +12,7 @@ import java.util.TreeSet;
 public class DocumentSample {
 	String[] urls;
 	Category category;
-	Set<String>[] sampleWords;
+	Set<String>[] sampleWords; //one set of words for each url
 	
 	public DocumentSample(Category c, String[] urls) {
 	    category = c;
@@ -23,6 +23,7 @@ public class DocumentSample {
 	
 	
 	public void populateSet(){
+		//extract the words from each url
 		for(int i = 0; i < urls.length; i++){
 			sampleWords[i] = runLynx(urls[i]);
 		}
