@@ -1,5 +1,11 @@
 import java.util.*;
 
+
+/*
+    Node in a category tree. Contains subcategories as well as a specificity
+    value, a coverage value, a flag indicating if the database is classified as this
+    category, and a list of top 4 urls for each string query done for this category.
+*/
 public class Category {
     String name;
     List<Category> subCategories;
@@ -26,7 +32,6 @@ public class Category {
         }
         return null;
     }
-    
     
     public void calculateSpecificity() {
         int sumChildCoverage = 0;

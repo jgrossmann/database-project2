@@ -13,6 +13,10 @@ import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+
+/*
+    Class which implements the QProber algorithm for database classification.
+*/
 public class QProber {
     int cThresh;
     double sThresh;
@@ -32,6 +36,8 @@ public class QProber {
         account_key = key;
     }
     
+    
+    //creates a tree of categories which correspond to possible categories to classify a database
     public Category createCategoryTree() {
         Category root = new Category("Root", null);
         root.specificity = 1.0;
@@ -70,6 +76,9 @@ public class QProber {
 		return content;
 	}
 	
+	
+	//performs queries for each category to generate a coverage for the database
+	//then finds specificity for each category
 	public void qProberAlgorithm() {
 	    getQueryResults(root, "categories/root.txt");
 	    for(Category c : root.subCategories) {
@@ -90,6 +99,8 @@ public class QProber {
 	    
 	}
 	
+	//traverses category tree to see which categories have coverage and specificity
+	//above the input thresholds. 
 	public Category categorizeDatabase() {
 	    System.out.println("Classifying...");
 	    String classification = "Root";
@@ -130,6 +141,11 @@ public class QProber {
 	    return root;
 	}
     
+    
+    //performs the query for each line in the path given to the function.
+    //adds the number of returned results to the coverage of the subcategory
+    //specified on the query line. Also caches the top 4 result urls of each
+    //query with the corresponding category.
     public void getQueryResults(Category root, String path){
         try{
         File file = new File(path);
@@ -162,6 +178,8 @@ public class QProber {
         }
     }
 
+
+    //Parses the web results as a string to get the number of returned results
     public int getResultCount(String s){
 		
 		int count = 0;
@@ -188,6 +206,8 @@ public class QProber {
 		return count;
 	}
 	
+	
+	//creates a bing url from the string array of query words.
 	public String createUrl(String[] queryWords) {
 
         String bingUrl = "https://api.datamarket.azure.com/Data.ashx/Bing/SearchWeb/v1/Composite?Query=%27";

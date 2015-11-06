@@ -13,6 +13,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+
+/*
+    Takes query web results as a string and returns a list of the top
+    4 url results.
+*/
 public class ResultParser {
 	
 	Document dom;

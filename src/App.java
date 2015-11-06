@@ -1,6 +1,14 @@
 import java.util.*;
+
+
+
+/*
+    Main class which queries databases in order to classify them into categories.
+    Uses queries specified by the text files in the categories subdirectory. 
+*/
 public class App {
 
+    //Outputs all unique urls as a document sample.
     public static String[] combineUrlMaps(List<Category> categories) {
         Set<String> set = new HashSet<String>();
         for(Category c : categories) {
@@ -11,6 +19,8 @@ public class App {
         return set.toArray(new String[set.size()]);
     }
     
+    //uses document sample of top 4 urls and tokenizes all strings from each document
+    //retrieved from each url. Calculates document frequency of each string found.
     public static void createContentSummary(Category root, String site) {
         System.out.println("\nCreating Content Summary for: "+root.name);
         List<Category> list = new ArrayList<Category>();
@@ -24,6 +34,7 @@ public class App {
         new ContentSummary(rootDs, site);
     }
 
+   
     public static void main(String[] args) {
         if(args.length != 4) {
             System.out.println("Usage: please run ./run.sh <BING_ACCOUNT_KEY> <t_es> <t_ec> <host>");
@@ -46,20 +57,17 @@ public class App {
         }
         String site = args[3];
         
+        
+        
         QProber prober = new QProber(cThresh, sThresh, site, key);
         prober.qProberAlgorithm();
         Category root = prober.categorizeDatabase();
         createContentSummary(root, site);
         
+        //creating content summaries for all categories above threshholds
         for(Category c : root.subCategories) {
             if(c.aboveThresh) {
-                System.out.println(c.name);
                 createContentSummary(c, site);
-                for(Category sub : c.subCategories) {
-                    if(sub.aboveThresh) {
-                        System.out.println(sub.name);
-                    }
-                }
             }
         }
         

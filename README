@@ -1,0 +1,76 @@
+John Grossmann jg3538
+Guanqi Luo gl2483
+
+BING ACCOUNT KEY: BU3X9a6Qbmi7UwCgwo3iuHTfOqbU5PWVjuEul/WzOLk
+
+List of Files:
+
+Makefile
+README
+run.sh
+class (dir)
+lib (dir)
+    commons-codec-1.10.jar
+categories (dir)
+    computers.txt
+    health.txt
+    root.txt
+    sports.txt
+src (dir)
+    App.java
+    Category.java
+    ContentSummary.java
+    DocumentSample.java
+    QProber.java
+    ResultParser.java
+
+
+
+
+Running the Program:
+To run the program, you should be in the base directory containing the run.sh file. The program uses hard-coded relative paths in order to load the query text files. Running this from another directory could result in unpredictable results (it probably won’t work). Also, the imported classes are hard-coded within the run script and the java files. PLEASE RUN IT FROM THE BASE DIRECTORY FOR IT TO WORK.
+
+In order to run the program, you must enter the following command:
+
+./run.sh <BING_ACCOUNT_KEY> <t_es> <t_ec> <host>
+
+<BING_ACCOUNT_KEY> is your Bing Search Account key
+<t_es> is the specificity threshold (between 0 and 1)
+<t_ec> is the coverage threshold
+<host> is the URL of the database to be classified
+
+
+
+
+Internal Design:
+Part1:
+
+App.java is the main class of this project. QProber.java is the class which carries out the QProber algorithm. The QProber class creates a tree structure of Category objects in the createCategoryTree function,  where each object in the tree has a list of subcategories which correspond to lower nodes in the tree. For example, the “Root” category has a list of subcategories: “Health”, “Sports”, “Computers”. Each one of those has subcategories as specified in the project prompt. 
+
+To get the coverage of each Category, the qProberAlgorithm function iterates through each of the query text files, performs each query, and adds the total number of returned results to the coverage of the subcategory specified in the query line. After all the queries are performed, the calculateSpecificity function in QProber calls the calculateSpecificity function on the root category as well as the root’s subcategories. In order to calculate the specificity of each category, we use the equation for ESpecificity(D, Ci) in Definition 3.2 of reference 1.
+
+Lastly, the categorizeDatabase function in QProber traverses the category tree, and compares the specificity and coverage of each category to the input thresholds. When the function completes, it prints out the classification of the Database. Each category that meets the threshold has its “aboveThresh” boolean variable set to true. 
+
+
+Part2a:
+When performing all the the query probes into the database, we store the top 4 URL results for each query into a hashmap in each category object. The ResultsParser class takes the results from the Bing query, and returns the top 4 urls. 
+
+Later, when we want to create content summaries for each category, we compile all of the urls into a single Hashset in the combineUrlMaps function of App.java. This function takes the list of result urls for each query in a category’s hashmap and the hashmap of each of its subcategories, and puts them into a hashset. The hashset ensures that there are no duplicate urls used for the content summary. The resulting hashset is returned as a string array of urls, which is the document sample. 
+
+
+Part2b:
+Once we have the DocumentSample with the urls for each category, we extract all the words from each url using the given lynx parser and store them in a TreeSet. After the extraction, we have an array of Sets with one set of words for each url. 
+
+Finally, we create the ContentSummary for each category using the DocumentSample. We first create an empty TreeMap to hold the words and its document frequency, then loop through the sets of words from the DocumentSample to populate the TreeMap as well as updating document frequency for each word. After populating the TreeMap, we write its content to a text file.
+
+
+
+
+
+Reference 1.
+"QProber: A System for Automatic Classification of Hidden-Web Databases" by Gravano, Ipeirotis, and Sahami
+
+
+
+
+

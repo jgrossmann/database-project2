@@ -4,6 +4,10 @@ import java.util.TreeSet;
 import java.util.*;
 import java.io.*;
 
+
+//takes a DocumentSampel object, calculates the document frequency for each word
+//in the documentsample wordset, and writes each word and corresponding doc frequency 
+//in alphabetical order.
 public class ContentSummary {
 	DocumentSample ds;
 	TreeMap<String, Integer> summary;
@@ -15,7 +19,7 @@ public class ContentSummary {
 	    writeToFile(ds.category.name+"-"+site+".txt");
 	}
 	
-	
+	//populate treemap with words and corresponding doc frequency
 	public void populateContentSummary(){
 	    
 		for(Set<String> s : ds.sampleWords){

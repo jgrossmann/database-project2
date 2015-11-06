@@ -4,6 +4,11 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.TreeSet;
 
+
+/*
+    Takes a document sample as string of urls and a corresponding category. Gets a text
+    version of the webpage for each url and stores the words found in a set for each url. 
+*/
 public class DocumentSample {
 	String[] urls;
 	Category category;
