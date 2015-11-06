@@ -36,7 +36,7 @@ public class App {
 
    
     public static void main(String[] args) {
-        if(args.length != 4) {
+		if(args.length != 4) {
             System.out.println("Usage: please run ./run.sh <BING_ACCOUNT_KEY> <t_es> <t_ec> <host>");
             System.out.println("<BING_ACCOUNT_KEY> is your Bing Search Account Key");
             System.out.println("<t_es> is the specificity threshold (between 0 and 1)");
